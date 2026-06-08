@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,30 +15,37 @@ function AdminLogin() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "http://localhost:5000/api/admin/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await res.json();
 
       if (data.success) {
+        // 🔐 TOKEN SAVE (IMPORTANT)
         localStorage.setItem("token", data.token);
+
+        setLoading(false);
 
         alert("Login successful ✔");
 
+        // 🚀 PROPER NAVIGATION (NO window.location)
         navigate("/admin/dashboard");
       } else {
+        setLoading(false);
         setError(data.message || "Invalid credentials ❌");
       }
     } catch (err) {
+      setLoading(false);
       setError("Server error. Please try again.");
     }
-
-    setLoading(false);
   };
 
   return (
@@ -62,6 +68,7 @@ function AdminLogin() {
           </div>
         )}
 
+        {/* EMAIL */}
         <input
           type="email"
           placeholder="Email address"
@@ -70,6 +77,7 @@ function AdminLogin() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Password"
@@ -78,6 +86,7 @@ function AdminLogin() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
+        {/* BUTTON */}
         <button
           type="submit"
           disabled={loading}

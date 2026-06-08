@@ -12,7 +12,7 @@ function AdminDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // 🔐 PROTECTION: if no token → redirect to login
+    // 🔐 SECURITY CHECK
     if (!token) {
       navigate("/admin");
       return;
@@ -36,9 +36,11 @@ function AdminDashboard() {
       );
 
       const data = await res.json();
-      setMessages(data.messages || []);
+
+      setMessages(data?.messages || []);
     } catch (err) {
-      console.log(err);
+      console.log("API Error:", err);
+      setMessages([]);
     }
   };
 
@@ -49,7 +51,7 @@ function AdminDashboard() {
 
     setTimeout(() => {
       navigate("/admin");
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -64,7 +66,6 @@ function AdminDashboard() {
           Manage Contact Messages
         </p>
 
-        {/* Logout Button */}
         <button
           onClick={logout}
           className="mt-6 bg-[#0F2E74] hover:bg-[#0b1f52] text-white px-6 py-3 rounded-xl shadow-md transition"
@@ -76,7 +77,6 @@ function AdminDashboard() {
       {/* CARDS */}
       <div className="grid md:grid-cols-3 gap-8 mb-10">
 
-        {/* TOTAL MESSAGES */}
         <div
           onClick={() => setShowMessages(!showMessages)}
           className="cursor-pointer bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 rounded-3xl shadow-xl"
@@ -86,7 +86,6 @@ function AdminDashboard() {
           <p className="mt-4 opacity-90">Click To View</p>
         </div>
 
-        {/* ACTIVE ADMIN */}
         <div
           onClick={() => setShowAdmin(!showAdmin)}
           className="cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white p-8 rounded-3xl shadow-xl"
@@ -96,7 +95,6 @@ function AdminDashboard() {
           <p className="mt-4 opacity-90">Click To View</p>
         </div>
 
-        {/* SYSTEM STATUS */}
         <div className="bg-gradient-to-r from-purple-500 to-fuchsia-700 text-white p-8 rounded-3xl shadow-xl">
           <h3 className="text-2xl font-semibold">System Status</h3>
           <p className="text-5xl font-bold mt-4">LIVE</p>
