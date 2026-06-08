@@ -30,7 +30,6 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppButton from "./components/WhatsAppButton";
-import { useLocation } from "react-router-dom";
 
 function App() {
   return (

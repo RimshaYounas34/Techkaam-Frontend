@@ -93,7 +93,6 @@ function Contact() {
   return (
     <section className="bg-gray-50 py-24 min-h-screen pt-36">
       <div className="max-w-3xl mx-auto px-8">
-
         <h2 className="text-4xl font-bold text-center text-slate-800 mb-2">
           Contact Us
         </h2>
@@ -104,9 +103,7 @@ function Contact() {
 
         {/* ERROR */}
         {error && (
-          <p className="text-red-600 text-center mb-4 font-semibold">
-            {error}
-          </p>
+          <p className="text-red-600 text-center mb-4 font-semibold">{error}</p>
         )}
 
         {/* SUCCESS */}
@@ -121,7 +118,6 @@ function Contact() {
           onSubmit={sendEmail}
           className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 space-y-4"
         >
-
           {/* NAME */}
           <input
             type="text"
@@ -170,7 +166,7 @@ function Contact() {
             value={formData.message}
             onChange={handleChange}
             className="border border-gray-300 rounded-lg px-4 py-3 w-full"
-          />
+          ></textarea>
 
           {/* BUTTON */}
           <button
@@ -180,7 +176,6 @@ function Contact() {
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
-
         </form>
       </div>
     </section>
