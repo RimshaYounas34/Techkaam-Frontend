@@ -30,6 +30,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppButton from "./components/WhatsAppButton";
+import ProtectedRoute from "./pages/admin/ProtectedRoute";
 
 function App() {
   return (
@@ -39,7 +40,6 @@ function App() {
       <Navbar />
 
       <Routes>
-
         {/* MAIN PAGES */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<WhyTeachKaam />} />
@@ -68,8 +68,14 @@ function App() {
 
         {/* ADMIN ROUTES ⭐ ADDED */}
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       <Footer />

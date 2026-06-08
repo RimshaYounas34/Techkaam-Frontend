@@ -1,27 +1,39 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
+  const navigate = useNavigate();
+
   const [messages, setMessages] = useState([]);
   const [showMessages, setShowMessages] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
-
-  // ✅ NEW STATE for logout message
   const [logoutMsg, setLogoutMsg] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    // 🔐 PROTECTION: if no token → redirect to login
+    if (!token) {
+      navigate("/admin");
+      return;
+    }
+
     fetchMessages();
     window.scrollTo(0, 0);
-  }, []);
+  }, [navigate]);
 
   const fetchMessages = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/admin/messages", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        "http://localhost:5000/api/admin/messages",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await res.json();
       setMessages(data.messages || []);
@@ -33,12 +45,10 @@ function AdminDashboard() {
   const logout = () => {
     localStorage.removeItem("token");
 
-    // ✅ show message
     setLogoutMsg(true);
 
-    // redirect after 2 sec
     setTimeout(() => {
-      window.location.href = "/admin";
+      navigate("/admin");
     }, 2000);
   };
 
@@ -57,7 +67,8 @@ function AdminDashboard() {
         {/* Logout Button */}
         <button
           onClick={logout}
-className="mt-6 bg-[#0F2E74] hover:bg-[#0b1f52] text-white px-6 py-3 rounded-xl shadow-md transition"        >
+          className="mt-6 bg-[#0F2E74] hover:bg-[#0b1f52] text-white px-6 py-3 rounded-xl shadow-md transition"
+        >
           Logout
         </button>
       </div>
@@ -136,7 +147,7 @@ className="mt-6 bg-[#0F2E74] hover:bg-[#0b1f52] text-white px-6 py-3 rounded-xl 
         </div>
       )}
 
-      {/* 🔥 LOGOUT MESSAGE (NAVY BLUE) */}
+      {/* LOGOUT MESSAGE */}
       {logoutMsg && (
         <div className="mt-10 bg-[#0F2E74] text-white text-center py-4 rounded-2xl shadow-lg">
           You have successfully logged out... Redirecting 🔄
